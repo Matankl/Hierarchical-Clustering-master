@@ -58,7 +58,7 @@ def generate_graph_with_euclidean_weights(num_nodes, additional_edges=0):
 
 # ############################################################################################
 # Generate the graph
-N_NODES = 30
+N_NODES = 14
 ADDITIONAL_EDGES = int(N_NODES * 0.4)
 graph = nx.Graph()
 graph.add_nodes_from([i for i in range(0, N_NODES)])
@@ -93,10 +93,27 @@ import matplotlib.pyplot as plt
 colors = ['b', 'g', 'r', 'c', 'm', 'y']
 pos = nx.fruchterman_reingold_layout(graph, pos=positions, iterations=500, dim = 2)
 
-plt.plot()
+plt.subplot(2, 2, 1)
 plt.title('Best cluster')
 plt.axis('off')
 nx.draw_networkx_edges(graph, pos)
 nodes = nx.draw_networkx_nodes(graph, pos, node_color='k')
 nx.draw_networkx_nodes(graph, pos, nodelist=best_cluster, node_color=colors[0])
+plt.subplot(2, 2, 2)
+plt.title('Best homogeneous clustering')
+plt.axis('off')
+nx.draw_networkx_edges(graph, pos)
+for l in range(min(len(colors), len(best_homogeneous_clustering))):
+    nx.draw_networkx_nodes(graph, pos, nodelist=best_homogeneous_clustering[l], node_color=colors[l])
+plt.subplot(2, 2, 3)
+plt.title('Best heterogeneous clustering')
+plt.axis('off')
+nx.draw_networkx_edges(graph, pos)
+for l in range(min(len(colors), len(best_heterogeneous_clustering))):
+    nx.draw_networkx_nodes(graph, pos, nodelist=best_heterogeneous_clustering[l], node_color=colors[l])
+plt.subplot(2, 2, 4)
+plt.title('Best distance')
+plt.axis('off')
+nx.draw_networkx_edges(graph, pos)
+nx.draw_networkx_nodes(graph, pos, node_color=[colors[best_louvain_clustering[node]] for node in graph])
 plt.show()
